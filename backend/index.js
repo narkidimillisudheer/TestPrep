@@ -15,8 +15,8 @@ const cohere = require('cohere-ai');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Access your API key as an environment variable (see "Set up your API key" above)
-// const genAI = new GoogleGenerativeAI("AIzaSyDuGJM-eeTKZXKaZ8tmqYt_C6OuSE8ktuc");//sudheer 1
-const genAI = new GoogleGenerativeAI("AIzaSyDilYpy8k4C2RwEXjybm8KG4ac4JLz_qCM");
+const genAI = new GoogleGenerativeAI("AIzaSyDuGJM-eeTKZXKaZ8tmqYt_C6OuSE8ktuc");//sudheer 1
+// const genAI = new GoogleGenerativeAI("AIzaSyDilYpy8k4C2RwEXjybm8KG4ac4JLz_qCM");
 // ...
 
 // The Gemini 1.5 models are versatile and work with most use cases
@@ -193,7 +193,6 @@ app.post('/api/assess-essay', async (req, res) => {
         // Log the input data
         console.log("Question:", question);
         console.log("Answer:", answer);
-        console.log("Test Type:", testType);
 
         // Make the request to the Pragya API
         const response = await axios.post(
@@ -204,8 +203,9 @@ app.post('/api/assess-essay', async (req, res) => {
             },
             {
                 headers: {
-                    Authorization: 'Bearer 82ee8440f49b6da4452e626ff55016c7',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer 82ee8440f49b6da4452e626ff55016c7'
+                    
                 }
             }
         );
