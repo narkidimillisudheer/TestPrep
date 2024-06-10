@@ -86,28 +86,6 @@ app.get("/check",verifySession(),(req, res) => {
     //....
 });
 
-// app.post('/api/generate-question', async (req, res) => {
-//     try {
-//         const { type, mode } = req.body;
-        
-//         // Adjust the prompt to ask for 10 questions
-//         let prompt = `Generate 10 ${mode} questions for ${type}. Each question should be in 10 words. Also include the test name either it is GRE, TOEFL, or IELTS.also include the question number and write new question in new line.dont give any extra matter.dont write heading start the response from questions`;
-//         const result = await model.generateContent(prompt);
-//         console.log(prompt);
-//         const response = await result.response;
-//         const text = await response.text();
-//         console.log(text);
-
-//         // Assuming the response text contains the questions separated by new lines
-//         const questions = text.split('\n').filter(question => question.trim() !== '');
-
-//         res.send({ questions });
-//     } catch (error) {
-//         console.error("Error generating questions:", error);
-//         res.status(500).send({ error: 'Failed to generate questions' });
-//     }
-// });
-
 app.post('/api/generate-question', async (req, res) => {
     try {
         const { type, mode } = req.body;
@@ -135,56 +113,6 @@ app.post('/api/generate-question', async (req, res) => {
         res.status(500).send({ error: 'Failed to generate content' });
     }
 });
-
-  // Endpoint to assess essay
-//   app.post('/api/assess-essay', async (req, res) => {
-//     try {
-//         const { question, answer, testType } = req.body;
-//         // Call the Pragya API to assess the essay
-//         console.log(question);
-//         console.log(answer);
-//         const response = await axios.post(
-//             'http://pragya-api.enligence.com/assessment/assess_essay/',
-//             {
-//                 question,
-//                 essay:answer
-//             },
-//             {
-//                 headers: {
-//                     Authorization: 'Bearer 82ee8440f49b6da4452e626ff55016c7',
-//                     'Content-Type': 'application/json'
-//                 }
-//             }
-//         );
-//         console.log(response.data);
-//         console.log("hii");
-//         // res.send(response.data);
-//         const {
-//             task_response,
-//             coherence_and_cohesion,
-//             lexical_resource,
-//             grammatical_range_and_accuracy,
-//             ielts_score,
-//             toefl_score,
-//             cefr_level
-//         } = response.data;
-
-//         // Send the relevant data back to the client
-//         res.send({
-//             task_response,
-//             coherence_and_cohesion,
-//             lexical_resource,
-//             grammatical_range_and_accuracy,
-//             ielts_score,
-//             toefl_score,
-//             cefr_level
-//         });
-//     } catch (error) {
-//         console.error('Error fetching questions from Pragya API:', error.response ? error.response.data : error.message);
-//         console.error("Error assessing essay:", error);
-//         res.status(500).send({ error: 'Failed to assess essay' });
-//     }
-// });
 
 app.post('/api/assess-essay', async (req, res) => {
     try {
@@ -235,17 +163,14 @@ app.post('/api/assess-essay', async (req, res) => {
         });
     } catch (error) {
         if (error.response) {
-            // The request was made, but the server responded with a status code that falls out of the range of 2xx
             console.error('Error response data:', error.response.data);
             console.error('Error response status:', error.response.status);
             console.error('Error response headers:', error.response.headers);
             res.status(error.response.status).send({ error: error.response.data });
         } else if (error.request) {
-            // The request was made, but no response was received
             console.error('Error request data:', error.request);
             res.status(500).send({ error: 'No response received from Pragya API' });
         } else {
-            // Something happened in setting up the request that triggered an Error
             console.error('Error message:', error.message);
             res.status(500).send({ error: error.message });
         }
@@ -254,51 +179,7 @@ app.post('/api/assess-essay', async (req, res) => {
 });
 
   const upload = multer({ storage: multer.memoryStorage() }); //for storage 
-  // Endpoint to assess speech
-//   app.post('/api/assess-speech', upload.single('audio'), async (req, res) => {
-//     const { question, testType } = req.body;
-//     const audio = req.file;
-  
-//     const formData = new FormData();
-//     formData.append('audio', audio.buffer, audio.originalname);
-//     formData.append('question', question);
-//     formData.append('testType', testType);
-  
-//     // Call the Pragya API to assess the speech
-//     const response = await axios.post('https://pragya-api.enligence.com/assess-speech', formData, {
-//       headers: {
-//         Authorization: 'Bearer 82ee8440f49b6da4452e626ff55016c7',
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-//     res.send({ evaluation: response.data });
-//   });
-// app.post('/api/assess-speech', upload.single('audio'), async (req, res) => {
-//     try {
-//         const { question } = req.body;
-//         const audio = req.file;
-//         console.log(question);
-//         console.log("check2");
-//         const formData = new FormData();
-//         formData.append('question', question);
-//         formData.append('audio', audio.buffer, audio.originalname);
 
-//         const response = await axios.post(
-//             'https://pragya-api.enligence.com/assessment/assess_speech/', // Replace with the actual Pragya API endpoint
-//             formData,
-//             {
-//                 headers: {
-//                     Authorization: 'Bearer 82ee8440f49b6da4452e626ff55016c7',
-//                     'Content-Type': 'multipart/form-data'
-//                 }
-//             }
-//         );
-//         res.send(response.data);
-//     } catch (error) {
-//         console.error('Error assessing speech:', error);
-//         res.status(500).send({ error: 'Failed to assess speech' });
-//     }
-// });
 app.post('/api/assess-speech', async (req, res) => {
     try {
         const { question, audio_data, sampling_rate } = req.body;
