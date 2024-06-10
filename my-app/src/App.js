@@ -14,8 +14,9 @@ import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui
 import { ThirdPartyPreBuiltUI } from 'supertokens-auth-react/recipe/thirdparty/prebuiltui';
 import { PasswordlessPreBuiltUI } from 'supertokens-auth-react/recipe/passwordless/prebuiltui';
 import * as reactRouterDom from "react-router-dom";
-import Home2 from './Components/Home2';
-import Test from './Components/Test';
+import Test2 from './Components/Test2';
+import QaDisplay2 from './Components/Qa/QaDisplay2';
+import HomePage from './Components/Homepage/HomePage';
 SuperTokens.init({
     appInfo: {
         appName: "my-app",
@@ -23,6 +24,16 @@ SuperTokens.init({
         websiteDomain: "http://localhost:3000",
         apiBasePath: "/zauth",
         websiteBasePath: "/auth2"
+    },
+    getRedirectionURL: async (context) => {
+        if (context.action === "SUCCESS" && context.newSessionCreated) {
+            if (context.redirectToPath !== undefined) {
+                // we are navigating back to where the user was before they authenticated
+                return context.redirectToPath;
+            }
+            return "/home";
+        }
+        return undefined;
     },
     recipeList: [
         Passwordless.init({
@@ -35,7 +46,7 @@ SuperTokens.init({
                     ThirdParty.Google.init(),
                     ThirdParty.Facebook.init(),
                 ],
-            }
+            },
         }),
         Session.init()
     ]
@@ -48,8 +59,8 @@ function App() {
                         {/*This renders the login UI on the /auth2 route*/}
                         {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, PasswordlessPreBuiltUI])}
                         {/*Your app routes*/}
-                        <Route path="/" element={<Home2 />}/>
-                        <Route path="/home" element={<Test />}/>
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/home" element={<Test2 />}/>
                     </Routes>
                 </BrowserRouter>
             </SuperTokensWrapper>
